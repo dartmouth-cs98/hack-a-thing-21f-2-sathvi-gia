@@ -34,6 +34,10 @@ const xyloSounds = {
 export default function App() {
 	// function that will play the correct note based on which button was pressed
 	handlePlaySound = async note => {
+		
+		if (recording) {
+			setNotesToPlayback(notesToPlayBack.concat(note)) //appending the new note to the array + updating state
+		}
 		// create a new sound object, bc every time we play sound --> have to create a new object
 		const soundObject = new Audio.Sound()
 
@@ -67,6 +71,7 @@ export default function App() {
 		// go through array playNotes and play each note for a set amount of time
 		// need to figure out how to do multiple notes in a row
 		// probably something similar to handlePlaySound
+		
 	}
 
   return (
