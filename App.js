@@ -16,6 +16,10 @@ import {
 } from './constants/Colors'
 
 
+const [notesToPlayBack, setNotesToPlayback] = useState([]);
+const [recording, setRecording] = useState(false);
+const [playNotes, setPlayNotes] = useState(false);
+
 // seven different sound files, one for each "button"/xylophone bar
 const xyloSounds = {
 	one: require('./assets/note1.wav'),
@@ -49,6 +53,20 @@ export default function App() {
 		} catch (error) {
 			console.log(error)
 		}
+	}
+
+	record = () => {
+		setRecording(true);
+	}
+
+	stopRecord = () => {
+		setRecording(false)
+	}
+
+	handlePlayNotes = (playNotes) => {
+		// go through array playNotes and play each note for a set amount of time
+		// need to figure out how to do multiple notes in a row
+		// probably something similar to handlePlaySound
 	}
 
   return (
@@ -130,7 +148,7 @@ export default function App() {
 			<View style={styles.buttonContainer}>
 				<TouchableOpacity
 					style={[styles.button, { backgroundColor: Black }]}
-					onPress={() => this.play()}
+					onPress={() => this.handlePlayNotes()}
 				>
 					<Text style={styles.buttonText}>Play</Text>
 				</TouchableOpacity>
