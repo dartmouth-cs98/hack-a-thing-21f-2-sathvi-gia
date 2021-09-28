@@ -9,7 +9,10 @@ import {
 	NoteFour,
 	NoteFive,
 	NoteSix,
-	NoteSeven
+	NoteSeven,
+	Black,
+	Green,
+	Red
 } from './constants/Colors'
 
 
@@ -104,6 +107,32 @@ export default function App() {
 					onPress={() => this.handlePlaySound('seven')}
 				>
 					<Text style={styles.buttonText}>Note 7</Text>
+				</TouchableOpacity>
+			</View>
+
+			{/*new buttons for recording!*/}
+			<View style={styles.buttonContainer}>
+				<TouchableOpacity
+					style={[styles.button, { backgroundColor: Green }]}
+					onPress={() => this.record()}
+				>
+					<Text style={styles.buttonText}>Press to Record</Text>
+				</TouchableOpacity>
+			</View>
+			<View style={styles.buttonContainer}>
+				<TouchableOpacity
+					style={[styles.button, { backgroundColor: Red }]}
+					onPress={() => this.stopRecord()}
+				>
+					<Text style={styles.buttonText}>Press to Stop</Text>
+				</TouchableOpacity>
+			</View>
+			<View style={styles.buttonContainer}>
+				<TouchableOpacity
+					style={[styles.button, { backgroundColor: Black }]}
+					onPress={() => this.play()}
+				>
+					<Text style={styles.buttonText}>Play</Text>
 				</TouchableOpacity>
 			</View>
 		</View>
