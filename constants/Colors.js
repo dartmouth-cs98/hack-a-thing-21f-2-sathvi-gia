@@ -1,0 +1,7 @@
+export const NoteOne = '#EB984E'
+export const NoteTwo = '#F5B041'
+export const NoteThree = '#F1C40F'
+export const NoteFour = '#D35400'
+export const NoteFive = '#B03A2E'
+export const NoteSix = '#873600'
+export const NoteSeven = '#641E16'
