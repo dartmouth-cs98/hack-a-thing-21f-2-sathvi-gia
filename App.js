@@ -1,24 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import { Audio } from 'expo-av';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Xylophone from './Xylophone';
+import Record from './Record';
 
-import {
-	NoteOne,
-	NoteTwo,
-	NoteThree,
-	NoteFour,
-	NoteFive,
-	NoteSix,
-	NoteSeven,
-	Black,
-	Green,
-	Red
-} from './constants/Colors'
-
-
-const [notesToPlayBack, setNotesToPlayback] = useState([]);
-const [recording, setRecording] = useState(false);
-const [playNotes, setPlayNotes] = useState(false);
+const Stack = createNativeStackNavigator();
 
 // seven different sound files, one for each "button"/xylophone bar
 const xyloSounds = {
@@ -31,22 +19,25 @@ const xyloSounds = {
 	seven: require('./assets/note7.wav')
 }
 
-export default function App() {
+const App = () => {
+	const [notesToPlayBack, setNotesToPlayback] = useState([]);
+	const [recording, setRecording] = useState(false);
+	const [playNotes, setPlayNotes] = useState(false);
 	// function that will play the correct note based on which button was pressed
 	handlePlaySound = async note => {
-		
 		if (recording) {
 			setNotesToPlayback(notesToPlayBack.concat(note)) //appending the new note to the array + updating state
+			console.log("notes array now:", notesToPlayBack);
 		}
 		// create a new sound object, bc every time we play sound --> have to create a new object
 		const soundObject = new Audio.Sound()
-
 		try {
 			let source = xyloSounds[note]
 			await soundObject.loadAsync(source)
 			await soundObject
 				.playAsync()
 				.then(async playbackStatus => {
+					console.log("playabledurationmillis", playbackStatus.playableDurationMillis);
 					setTimeout(() => {
 						soundObject.unloadAsync()
 					}, playbackStatus.playableDurationMillis)
@@ -60,106 +51,65 @@ export default function App() {
 	}
 
 	record = () => {
+		// maybe here we can
+		setPlayNotes(false);
+		setNotesToPlayback([]); // reset the notes when the user clicks the record button
 		setRecording(true);
+		console.log("playnotes", playNotes);
+		console.log("recording", recording);
 	}
 
 	stopRecord = () => {
 		setRecording(false)
+		console.log("recording", recording);
 	}
 
-	handlePlayNotes = (playNotes) => {
+	handlePlayNotes = async () => {
 		// go through array playNotes and play each note for a set amount of time
 		// need to figure out how to do multiple notes in a row
 		// probably something similar to handlePlaySound
-		
+		setPlayNotes(true);
+		console.log("playnotes", playNotes);
+		console.log("recording", recording);
+		console.log("notes to play:", notesToPlayBack);
+		// play the notes
+		// setPlayNotes(false);
+
+		for (let i = 0; i < notesToPlayBack.length; i++) {
+			console.log(notesToPlayBack[i]);
+			const note = notesToPlayBack[i];
+			const soundObject = new Audio.Sound()
+			try {
+				let source = xyloSounds[note]
+				await soundObject.loadAsync(source)
+				await soundObject
+					.playAsync()
+					.then(async playbackStatus => {
+						setTimeout(() => {
+							soundObject.unloadAsync()
+						}, playbackStatus.playableDurationMillis)
+					})
+					.catch(error => {
+						console.log(error)
+					})
+			} catch (error) {
+				console.log(error)
+			}
+		}
 	}
 
-  return (
-    <View style={styles.container}>
-			<View style={styles.buttonContainer}>
-				<TouchableOpacity
-					style={[styles.button, { backgroundColor: NoteOne }]}
-					onPress={() => this.handlePlaySound('one')}
-				>
-					<Text style={styles.buttonText}>Note 1</Text>
-				</TouchableOpacity>
-			</View>
-			<View style={styles.buttonContainer}>
-				<TouchableOpacity
-					style={[styles.button, { backgroundColor: NoteTwo }]}
-					onPress={() => this.handlePlaySound('two')}
-				>
-					<Text style={styles.buttonText}>Note 2</Text>
-				</TouchableOpacity>
-			</View>
-			<View style={styles.buttonContainer}>
-				<TouchableOpacity
-					style={[styles.button, { backgroundColor: NoteThree }]}
-					onPress={() => this.handlePlaySound('three')}
-				>
-					<Text style={styles.buttonText}>Note 3</Text>
-				</TouchableOpacity>
-			</View>
-			<View style={styles.buttonContainer}>
-				<TouchableOpacity
-					style={[styles.button, { backgroundColor: NoteFour }]}
-					onPress={() => this.handlePlaySound('four')}
-				>
-					<Text style={styles.buttonText}>Note 4</Text>
-				</TouchableOpacity>
-			</View>
-			<View style={styles.buttonContainer}>
-				<TouchableOpacity
-					style={[styles.button, { backgroundColor: NoteFive }]}
-					onPress={() => this.handlePlaySound('five')}
-				>
-					<Text style={styles.buttonText}>Note 5</Text>
-				</TouchableOpacity>
-			</View>
-			<View style={styles.buttonContainer}>
-				<TouchableOpacity
-					style={[styles.button, { backgroundColor: NoteSix }]}
-					onPress={() => this.handlePlaySound('six')}
-				>
-					<Text style={styles.buttonText}>Note 6</Text>
-				</TouchableOpacity>
-			</View>
-			<View style={styles.buttonContainer}>
-				<TouchableOpacity
-					style={[styles.button, { backgroundColor: NoteSeven }]}
-					onPress={() => this.handlePlaySound('seven')}
-				>
-					<Text style={styles.buttonText}>Note 7</Text>
-				</TouchableOpacity>
-			</View>
-
-			{/*new buttons for recording!*/}
-			<View style={styles.buttonContainer}>
-				<TouchableOpacity
-					style={[styles.button, { backgroundColor: Green }]}
-					onPress={() => this.record()}
-				>
-					<Text style={styles.buttonText}>Press to Record</Text>
-				</TouchableOpacity>
-			</View>
-			<View style={styles.buttonContainer}>
-				<TouchableOpacity
-					style={[styles.button, { backgroundColor: Red }]}
-					onPress={() => this.stopRecord()}
-				>
-					<Text style={styles.buttonText}>Press to Stop</Text>
-				</TouchableOpacity>
-			</View>
-			<View style={styles.buttonContainer}>
-				<TouchableOpacity
-					style={[styles.button, { backgroundColor: Black }]}
-					onPress={() => this.handlePlayNotes()}
-				>
-					<Text style={styles.buttonText}>Play</Text>
-				</TouchableOpacity>
-			</View>
-		</View>
-  );
+	return (
+		<NavigationContainer>
+			<Stack.Navigator>
+				<Stack.Screen
+					name="Xylophone"
+					component={Xylophone}
+					options={{ title: 'Xylophone' }}
+				/>
+				<Stack.Screen name="Record" component={Record} />
+			</Stack.Navigator>
+		</NavigationContainer>
+	);
 }
 
 const styles = StyleSheet.create({
@@ -182,4 +132,6 @@ const styles = StyleSheet.create({
 		color: '#fff',
 		fontSize: 18
 	}
-})
+});
+
+export default App;
