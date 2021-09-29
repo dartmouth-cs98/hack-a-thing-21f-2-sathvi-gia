@@ -4,6 +4,12 @@ import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import { NoteOne } from './constants/Colors'
 
 const Record = ({ navigation }) => {
+	const [recording, isRecording] = useState(false);
+	const [recording, isDoneRecording] = useState(false);
+	const fileUrl = useState(null);
+
+
+
 	return (
 		<View style={styles.container}>
             <View style={styles.buttonContainer}>
@@ -15,6 +21,23 @@ const Record = ({ navigation }) => {
                     }
                 >
                     <Text style={styles.buttonText}>Xylophone</Text>
+                </TouchableOpacity>
+            </View>
+
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                    style={[styles.button, { backgroundColor: Green }]}
+                    onPress={() => this.isRecording()}
+                >
+                    <Text style={styles.buttonText}>Press to Record Voice</Text>
+                </TouchableOpacity>
+            </View>
+			<View style={styles.buttonContainer}>
+                <TouchableOpacity
+                    style={[styles.button, { backgroundColor: Red }]}
+                    onPress={() => this.isDoneRecording()}
+                >
+                    <Text style={styles.buttonText}>Press to STOP Recording</Text>
                 </TouchableOpacity>
             </View>
         </View>
