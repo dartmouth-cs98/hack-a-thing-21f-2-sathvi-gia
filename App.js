@@ -20,92 +20,10 @@ const xyloSounds = {
 }
 
 const App = () => {
-	const [notesToPlayBack, setNotesToPlayback] = useState([]);
-	const [recording, setRecording] = useState(false);
-	const [playNotes, setPlayNotes] = useState(false);
-	// function that will play the correct note based on which button was pressed
-	handlePlaySound = async note => {
-		if (recording) {
-			setNotesToPlayback(notesToPlayBack.concat(note)) //appending the new note to the array + updating state
-			console.log("notes array now:", notesToPlayBack);
-		}
-		// create a new sound object, bc every time we play sound --> have to create a new object
-		const soundObject = new Audio.Sound()
-		try {
-			let source = xyloSounds[note]
-			await soundObject.loadAsync(source)
-			await soundObject
-				.playAsync()
-				.then(async playbackStatus => {
-					console.log("playabledurationmillis", playbackStatus.playableDurationMillis);
-					setTimeout(() => {
-						soundObject.unloadAsync()
-					}, playbackStatus.playableDurationMillis)
-				})
-				.catch(error => {
-					console.log(error)
-				})
-		} catch (error) {
-			console.log(error)
-		}
-	}
-
-	record = () => {
-		// maybe here we can
-		setPlayNotes(false);
-		setNotesToPlayback([]); // reset the notes when the user clicks the record button
-		setRecording(true);
-		console.log("playnotes", playNotes);
-		console.log("recording", recording);
-	}
-
-	stopRecord = () => {
-		setRecording(false)
-		console.log("recording", recording);
-	}
-
-	handlePlayNotes = async () => {
-		// go through array playNotes and play each note for a set amount of time
-		// need to figure out how to do multiple notes in a row
-		// probably something similar to handlePlaySound
-		setPlayNotes(true);
-		console.log("playnotes", playNotes);
-		console.log("recording", recording);
-		console.log("notes to play:", notesToPlayBack);
-		// play the notes
-		// setPlayNotes(false);
-
-		for (let i = 0; i < notesToPlayBack.length; i++) {
-			console.log(notesToPlayBack[i]);
-			const note = notesToPlayBack[i];
-			const soundObject = new Audio.Sound()
-			try {
-				let source = xyloSounds[note]
-				await soundObject.loadAsync(source)
-				await soundObject
-					.playAsync()
-					.then(async playbackStatus => {
-						setTimeout(() => {
-							soundObject.unloadAsync()
-						}, playbackStatus.playableDurationMillis)
-					})
-					.catch(error => {
-						console.log(error)
-					})
-			} catch (error) {
-				console.log(error)
-			}
-		}
-	}
-
 	return (
 		<NavigationContainer>
 			<Stack.Navigator>
-				<Stack.Screen
-					name="Xylophone"
-					component={Xylophone}
-					options={{ title: 'Xylophone' }}
-				/>
+				<Stack.Screen name="Xylophone" component={Xylophone} />
 				<Stack.Screen name="Record" component={Record} />
 			</Stack.Navigator>
 		</NavigationContainer>

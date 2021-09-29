@@ -14,7 +14,6 @@ import {
 	Red
 } from './constants/Colors'
 
-
 // seven different sound files, one for each "button"/xylophone bar
 const xyloSounds = {
 	one: require('./assets/note1.wav'),
@@ -34,9 +33,9 @@ const Xylophone = ({ navigation }) => {
 	// function that will play the correct note based on which button was pressed
 	handlePlaySound = async (note) => {
 		if (recording) {
-			setNotesToPlayback(notesToPlayBack.concat(note)) //appending the new note to the array + updating state
+			setNotesToPlayback(notesToPlayBack.concat(note)) // appending the new note to the array + updating state
 		}
-		// create a new sound object, bc every time we play sound --> have to create a new object
+		// create a new sound object, bc every time we play sound, we have to create a new object
 		const soundObject = new Audio.Sound()
 		try {
 			let source = xyloSounds[note]
@@ -149,7 +148,7 @@ const Xylophone = ({ navigation }) => {
                     style={[styles.button, { backgroundColor: Green }]}
                     onPress={() => this.record()}
                 >
-                    <Text style={styles.buttonText}>Press to Record</Text>
+                    <Text style={styles.buttonText}>Press to Start Recording</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.buttonContainer}>
@@ -157,7 +156,7 @@ const Xylophone = ({ navigation }) => {
                     style={[styles.button, { backgroundColor: Red }]}
                     onPress={() => this.stopRecord()}
                 >
-                    <Text style={styles.buttonText}>Press to Stop</Text>
+                    <Text style={styles.buttonText}>Press to Stop Recording</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.buttonContainer}>
@@ -176,7 +175,7 @@ const Xylophone = ({ navigation }) => {
                         navigation.navigate('Record')
                     }
                 >
-                    <Text style={styles.buttonText}>Go To Record Page</Text>
+                    <Text style={styles.buttonText}>Go To Recording Page</Text>
                 </TouchableOpacity>
             </View>
         </View>
